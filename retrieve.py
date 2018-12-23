@@ -4,6 +4,18 @@ import imaplib
 import email
 import mysql.connector
 
+def dbconnect ():  
+    conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="$1Vennecy$1",
+    database="wone_automationdb"
+    )
+    return conn
+
+
+
+
 
 # Connect to imap server
 username = 'andre.souza@vennecy.com.br'
@@ -44,22 +56,33 @@ email_device = (msg.get('subject'))
 device = (extract(':', ':', email_device))
 
 #Connect to mysql and insert values from the client message
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  passwd="$1Vennecy$1",
-  database="wone_automationdb"
-)
+#mydb = mysql.connector.connect(
+#  host="localhost",
+#  user="root",
+#  passwd="$1Vennecy$1",
+#  database="wone_automationdb"
+#)
 
+mydb = dbconnect()
 mycursor = mydb.cursor()
+mycursor.execute("SELECT MAX(id) FROM input")
+lastiddirty = str(mycursor.fetchall())
+lastid = (extract("(", ",", lastiddirty))
 
-sql = "INSERT INTO input (client, device, request) VALUES (%s, %s, %s)"
-val = (client, device, request)
+sql = ("select device from input where id = %s")
+val = lastid
+mycursor.execute("select device from input where id ="+lastid)
+lastdevicedirty  = str(mycursor.fetchall())
+lastdevice = (extract("'", "'", lastdevicedirty))
 
-mycursor.execute(sql, val)                     
-mydb.commit()
-mydb.close()
+if lastdevice != device:
+    sql = "INSERT INTO input (client, device, request) VALUES (%s, %s, %s)"
+    val = (client, device, request)
 
+    mycursor.execute(sql, val)                     
+    mydb.commit()
+    mydb.close()
+  
 
 
 
