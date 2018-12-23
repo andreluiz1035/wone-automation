@@ -1,0 +1,22 @@
+git push -u origin master
+
+mysql> create database wone_automationdb;
+
+
+mysql> CREATE TABLE action ( id smallint unsigned not null auto_increment, client varchar(48) not null, device varchar(128), action varchar(48), status varchar(48), time timestamp, input varchar(48), topdesk varchar(48), email_client varchar(48), constraint pk_example primary key (id) );
+
+
+mysql> CREATE TABLE input ( id smallint unsigned not null auto_increment, client varchar(48) not null, device varchar(128), request varchar(48), time timestamp, constraint pk_example primary key (id) );
+Query OK, 0 rows affected (0.30 sec)
+
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  passwd="$1Vennecy$1",
+  database="wone_automationdb"
+)
+
+
+from action select max (input)
+from input select id where id > input
