@@ -1,0 +1,10 @@
+mysql> create database wone_automationdb;
+
+
+mysql> CREATE TABLE action ( id smallint unsigned not null auto_increment, client varchar(48) not null, device varchar(128), action varchar(48), status varchar(48), time timestamp, input varchar(48), topdesk varchar(48), email_client varchar(48), constraint pk_example primary key (id) );
+
+
+mysql> CREATE TABLE input ( id smallint unsigned not null auto_increment, client varchar(48) not null, device varchar(128), request varchar(48), time timestamp, constraint pk_example primary key (id) );
+
+
+
