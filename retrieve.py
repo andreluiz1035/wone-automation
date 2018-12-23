@@ -2,7 +2,7 @@
 
 import imaplib
 import email
-
+import mysql.connector
 
 
 # Connect to imap server
@@ -27,23 +27,46 @@ result, messages = mail.uid('fetch', ','.join(uids[-10:]), '(BODY.PEEK[HEADER])'
 # the subject.
 for _, message in messages[::2]:
     msg = email.message_from_string(message)
-#print('{}: {}'.format(msg.get('from'), msg.get('subject')))
 
 def extract (start, end, string):
    s =  ((string.split(start))[1].split(end)[0])
    return s; 
 
-#Extract from and subject fields
+#Extract fields from email
 email_client = (msg.get('from'))
 subject = (msg.get('subject'))
 client = (extract('<', '>', email_client))
-print(client)
-email_action = (msg.get('subject'))
-action =  (extract('-', ':', email_action))
-print(action)
+
+email_request = (msg.get('subject'))
+request = (extract('-', ':', email_request))
+
 email_device = (msg.get('subject'))
 device = (extract(':', ':', email_device))
-print(device)
+
+#Connect to mysql and insert values from the client message
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  passwd="$1Vennecy$1",
+  database="wone_automationdb"
+)
+
+mycursor = mydb.cursor()
+
+sql = "INSERT INTO input (client, device, request) VALUES (%s, %s, %s)"
+val = (client, device, request)
+
+mycursor.execute(sql, val)                     
+mydb.commit()
+mydb.close()
+
+
+
+
+
+
+
+
 
 
 
