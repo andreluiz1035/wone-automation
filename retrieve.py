@@ -2,6 +2,8 @@
 
 import imaplib
 import email
+import re
+
 
 # Connect to imap server
 username = 'andre.souza@vennecy.com.br'
@@ -25,6 +27,16 @@ result, messages = mail.uid('fetch', ','.join(uids[-10:]), '(BODY.PEEK[HEADER])'
 # the subject.
 for _, message in messages[::2]:
     msg = email.message_from_string(message)
-print('{}: {}'.format(msg.get('from'), msg.get('subject')))
+#print('{}: {}'.format(msg.get('from'), msg.get('subject')))
 
-#
+#Extract from and subject fields
+start = '<'
+end = '>'
+s = str(msg.get('from'))
+print((s.split(start))[1].split(end)[0])
+print(msg.get('subject'))
+
+
+
+
+
