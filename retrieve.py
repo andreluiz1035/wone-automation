@@ -2,7 +2,7 @@
 
 import imaplib
 import email
-import re
+
 
 
 # Connect to imap server
@@ -29,14 +29,21 @@ for _, message in messages[::2]:
     msg = email.message_from_string(message)
 #print('{}: {}'.format(msg.get('from'), msg.get('subject')))
 
+def extract (start, end, string):
+   s =  ((string.split(start))[1].split(end)[0])
+   return s; 
+
 #Extract from and subject fields
-start = '<'
-end = '>'
-s = str(msg.get('from'))
-print((s.split(start))[1].split(end)[0])
-print(msg.get('subject'))
-
-
+email_client = (msg.get('from'))
+subject = (msg.get('subject'))
+client = (extract('<', '>', email_client))
+print(client)
+email_action = (msg.get('subject'))
+action =  (extract('-', ':', email_action))
+print(action)
+email_device = (msg.get('subject'))
+device = (extract(':', ':', email_device))
+print(device)
 
 
 
