@@ -26,3 +26,5 @@ result, messages = mail.uid('fetch', ','.join(uids[-10:]), '(BODY.PEEK[HEADER])'
 for _, message in messages[::2]:
     msg = email.message_from_string(message)
 print('{}: {}'.format(msg.get('from'), msg.get('subject')))
+
+#
